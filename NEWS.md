@@ -1,7 +1,7 @@
 # riskassessment (development version)
 
 ### For Devs
-* Moved `shinytest2` setup options to `setup_shinytest2.R` for more seemless integration in test development.
+* Moved `shinytest2` setup options to `setup_shinytest2.R` for more seamless integration in test development.
 
 # riskassessment 3.1.2
 
