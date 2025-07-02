@@ -1,3 +1,13 @@
+# riskassessment 3.1.2
+
+Mostly minor changes here!
+
+* Can now Open hyperlinks in a **new tab** from cards.
+* Added `inherits` to list of used configs
+* Fixed bug causing app to crash with `ELSE` condition in rules
+* Fixed bug where 'Decision Automation' header would disappear when non-risk decision automation rules existed but failed to include any that were based on the pkg risk score.
+* Incorporate newer version of `riskmetric` for dependency assessment
+
 # riskassessment 3.1.1
 
 * Added navigation controls in Function Explorer tab (#644)
