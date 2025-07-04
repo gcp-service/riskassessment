@@ -24,7 +24,7 @@
       },
       {
         "Name": "CRAN",
-        "URL": "https://packagemanager.posit.co/cran/2024-04-08"
+        "URL": "https://packagemanager.posit.co/cran/2025-07-01"
       }
     ]
   },
@@ -2233,13 +2233,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.5",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "utils"
-      ],
-      "Hash": "32c3f93e8360f667ca5863272ec8ba6a"
+      "Version": "1.1.4",
+      "OS_type": null,
+      "Repository": "CRAN",
+      "Source": "Repository"
     },
     "reprex": {
       "Package": "reprex",
