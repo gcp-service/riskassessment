@@ -3,7 +3,8 @@
   "external.libraries": [],
   "ignored.packages": [
     "riskassessment",
-    "rsconnect"
+    "rsconnect",
+    "revdepcheck"
   ],
   "package.dependency.fields": [
     "Imports",
