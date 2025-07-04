@@ -25,7 +25,7 @@ test_that("contrib_card() produces bslib shiny.tag", {
   # custom
   team_member1 <- contrib_card(
     role = "Workstream guy",
-    pic = NULL,
+    pic = "",
     site = 'https://github.com/pharmar/riskassessment',
     name = "Some Guy",
     org = "Some Company")
