@@ -1,10 +1,11 @@
 {
-  "bioconductor.version": [],
+  "bioconductor.version": "3.21",
   "external.libraries": [],
   "ignored.packages": [
     "riskassessment",
     "rsconnect",
-    "revdepcheck"
+    "revdepcheck",
+    "rhub"
   ],
   "package.dependency.fields": [
     "Imports",
