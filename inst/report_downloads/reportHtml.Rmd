@@ -49,11 +49,11 @@ params:
 
 ```{r setup, include=FALSE}
 library(knitr)
-if(isFALSE(capabilities("cairo"))){knitr::opts_chunk$set(dev = "svglite")}
-knitr::opts_chunk$set(echo = F, fig.width = 5.5, fig.height = 3.4)
 library(shiny)
 library(bslib)
 library(shinyjs)
+
+knitr::opts_chunk$set(echo = F, fig.width = 5.5, fig.height = 3.4)
 ```
 
 
