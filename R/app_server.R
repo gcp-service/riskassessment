@@ -55,14 +55,8 @@ app_server <- function(input, output, session) {
   } else if (isFALSE(get_db_config("use_shinymanager"))) {
     res_auth <- reactiveValues()
     res_auth[["admin"]] <- FALSE
-    if(isTRUE(get_db_config("use_shinyproxy"))){
-      res_auth[["user"]] <- session$request$HTTP_X_SP_USERNAME %||% session$request$HTTP_X_SP_USERID %||% "anonymous"
-      all_groups <- session$request$HTTP_X_SP_USERGROUPS
-    } else{
-      res_auth[["user"]] <- session$user %||% "anonymous"
-      all_groups <- session$groups
-    }
-    res_auth[["role"]] <- intersect(unlist(all_groups, use.names = FALSE), dbSelect("select user_role from roles")[[1]]) %||% "default"
+    res_auth[["user"]] <- session$user %||% "anonymous"
+    res_auth[["role"]] <- intersect(unlist(session$groups, use.names = FALSE), dbSelect("select user_role from roles")[[1]]) %||% "default"
   } else {
     # check_credentials directly on sqlite db
     res_auth <- shinymanager::secure_server(
