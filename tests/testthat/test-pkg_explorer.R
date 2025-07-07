@@ -5,7 +5,8 @@ test_that("pkg_explorer works", {
     height = 1080,
     width = 1920
     )
-
+  on.exit(app$stop())
+  
   expect_equal(
     app$get_value(output = "src_explorer-is_file"),
     TRUE

@@ -30,6 +30,7 @@ test_that("The introJS module works as expected for admins", {
   
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"))
+  on.exit(app$stop())
   app$set_window_size(width = 1619, height = 1057)
   app$wait_for_idle()
   
@@ -172,8 +173,6 @@ test_that("The introJS module works as expected for admins", {
   expect(all(purrr::map_lgl(el_pos, ~ any(.x > 0))), "One or more elements are not visible")
   steps <- app$get_value(export = "reportPreview-introJS-steps")
   expect_equal(report_preview, steps)
-  
-  app$stop()
 })
 
 test_that("The introJS module works as expected for nonadmins", {
@@ -196,6 +195,7 @@ test_that("The introJS module works as expected for nonadmins", {
   
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps", "nonadmin-app"))
+  on.exit(app$stop())
   app$set_window_size(width = 1619, height = 1057)
   app$wait_for_idle()
   
@@ -239,6 +239,4 @@ test_that("The introJS module works as expected for nonadmins", {
   expect(all(purrr::map_lgl(el_pos, ~ any(.x > 0))), "One or more elements are not visible")
   steps <- app$get_value(export = "upload_package-introJS-steps")
   expect_equal(upload_pkg_complete, steps)
-  
-  app$stop()
 })

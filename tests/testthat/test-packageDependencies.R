@@ -17,6 +17,7 @@ test_that("module can produce a table of package dependencies", {
 
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"), load_timeout = 1E6)
+  on.exit(app$stop())
 
   app$set_inputs(`sidebar-select_pkg` = "dplyr")
   

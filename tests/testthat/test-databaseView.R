@@ -15,6 +15,7 @@ test_that("Reactivity of database view table", {
   
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"))
+  on.exit(app$stop())
   
   app$set_inputs(apptabs = "database-tab")
   
@@ -69,7 +70,4 @@ test_that("Reactivity of database view table", {
   app$run_js("Shiny.setInputValue('databaseView-packages_table_rows_selected', null)")
   app$wait_for_idle()
   expect_equal(app$get_value(export = "databaseView-pkgs"), character(0))
-  
-  app$stop()
-  
 })

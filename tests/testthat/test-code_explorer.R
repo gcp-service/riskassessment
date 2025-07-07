@@ -1,6 +1,7 @@
 test_that("pkg_explorer works", {
   
   app <- shinytest2::AppDriver$new(test_path("test-apps", "explorer-app"))
+  on.exit(app$stop())
   
   app$set_inputs(tabs = "fn_expl_tab")
   app$wait_for_value(input = "fn_explorer-test_files")
