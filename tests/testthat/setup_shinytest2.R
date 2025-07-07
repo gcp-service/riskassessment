@@ -6,6 +6,7 @@ options(chromote.headless = "new")
 chromote::set_chrome_args(
   c(
     chromote::default_chrome_args(),
+    "--disable-dev-shm-usage",
     "--no-sandbox"
   )
 )
