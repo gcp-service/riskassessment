@@ -34,7 +34,7 @@ test_that("pkg_explorer works", {
   )
   
   app$set_inputs(`fn_explorer-file_type` = "man")
-  app$wait_for_idle()
+  app$wait_for_idle(1000)
   
   expect_equal(
     app$get_value(input = "fn_explorer-man_files"),
