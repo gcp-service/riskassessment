@@ -47,13 +47,13 @@ params:
 }
 </style>
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, dev='svglite'}
 library(knitr)
 knitr::opts_chunk$set(
   echo = F, 
   fig.width = 5.5, 
   fig.height = 3.4,
-  dev = "CairoPNG"
+  dev = "svglite"
   )
 library(shiny)
 library(bslib)
