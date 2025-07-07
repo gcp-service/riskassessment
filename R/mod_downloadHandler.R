@@ -290,12 +290,21 @@ mod_downloadHandler_server <- function(id, pkgs, user, metric_weights){
 
               dep_cards <- build_dep_cards(data = dep_metrics, loaded = session$userData$loaded2_db()$name, toggled = session$userData$suggests())
 
+              report_options <- list()
+              if(
+                !capabilities("cairo") && 
+                input$report_format %in% c("html", "docx") &&
+                "svglite" %in% rownames(installed.packages())
+                ){
+                report_options <- list(dev = 'svglite')
+              }
 
               # Render the report, passing parameters to the rmd file.
               rmarkdown::render(
                 input = Report,
                 output_file = basename(path),
                 clean = FALSE,
+                output_options = report_options,
                 params = list(pkg = pkg_list,
                               report_includes = input$report_includes,
                               riskmetric_version = paste0(packageVersion("riskmetric")),
