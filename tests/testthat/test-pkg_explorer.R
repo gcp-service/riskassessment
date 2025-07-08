@@ -18,7 +18,12 @@ test_that("pkg_explorer works", {
     app$get_value(output = "src_explorer-filepath")$html,
     structure("<h5>DESCRIPTION</h5>", html = TRUE, class = c("html", "character"))
   )
-  app$expect_text(".ace_content .ace_layer.ace_text-layer")
+  
+  ## The text only shows up if it is visible in the UI.
+  ## Thus, with different resolution settings this can give different snapshots.
+  ## Selecting only first part solves this:
+  description_text <- app$get_text(".ace_content .ace_layer.ace_text-layer")
+  expect_snapshot(substring(description_text, 1, 1507))
 
   app$run_js("$('#300 .jstree-ocl').click()")
   app$run_js("$('#301_anchor').click()")
@@ -28,5 +33,6 @@ test_that("pkg_explorer works", {
     app$get_value(output = "src_explorer-filepath")$html,
     structure("<h5>tests/testthat.R</h5>", html = TRUE, class = c("html", "character"))
   )
+  # Not much text in this snapshot, thus no need to trim text here:
   app$expect_text(".ace_content .ace_layer.ace_text-layer")
 })
