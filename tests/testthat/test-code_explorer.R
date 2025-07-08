@@ -41,6 +41,7 @@ test_that("pkg_explorer works", {
     "arrange.Rd"
   )
   
-  app$expect_text("#fn_explorer-file_output div.container")
+  explorer_text <- app$get_text("#fn_explorer-file_output div.container")
+  expect_snapshot(substring(explorer_text, 1, 1500))
   
 })

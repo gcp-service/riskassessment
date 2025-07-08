@@ -58,7 +58,7 @@ server <- function(input, output, server) {
     name = "tester",
     role = "admin"
   )
-  credential_config <- riskassessment:::get_db_config("credentials")
+  credential_config <- riskassessment:::get_db_config("credentials", config = "default")
   riskassessment:::mod_pkg_explorer_server("src_explorer", selected_pkg,
                                            pkgarchive = pkgarchive,
                                            user = user,
