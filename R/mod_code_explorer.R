@@ -11,6 +11,7 @@ mod_code_explorer_ui <- function(id){
   ns <- NS(id)
   uiOutput(ns("func_explorer_ui"))
 }
+
 #' code_explorer Server Functions
 #'
 #' @noRd 
