@@ -72,5 +72,9 @@ server <- function(input, output, server) {
                                             credentials = credential_config)
 }
 
-shinyApp(ui, server)
+shinyApp(ui, server) |> 
+  # Sometimes this app gives a warning about an incomplete final line.
+  # it occurs in readLines(p$get_error_file()) within shinytest2 
+  # (shinytest2:::app_start_shiny). Not essential as long as the tests pass
+  suppressWarnings()
 
