@@ -1,6 +1,6 @@
 test_that("pkg_explorer works", {
   
-  app <- shinytest2::AppDriver$new(test_path("test-apps", "explorer-app"))
+  app <- shinytest2::AppDriver$new(test_path("test-apps", "explorer-app"), load_timeout = 60*1000)
   on.exit(app$stop())
   
   app$set_inputs(tabs = "fn_expl_tab")

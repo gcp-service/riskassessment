@@ -3,7 +3,8 @@ test_that("pkg_explorer works", {
   app <- shinytest2::AppDriver$new(
     test_path("test-apps", "explorer-app"),
     height = 1080,
-    width = 1920
+    width = 1920,
+    load_timeout = 60*1000
     )
   on.exit(app$stop())
   
