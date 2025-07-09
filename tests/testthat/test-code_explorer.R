@@ -1,10 +1,9 @@
-test_that("pkg_explorer works", {
+test_that("code_explorer works", {
   
   app <- shinytest2::AppDriver$new(
     test_path("test-apps", "explorer-app"), 
     height = 1080,
-    width = 1920,
-    load_timeout = 90*1000
+    width = 1920
   ) |> 
     # Sometimes this app gives a warning about an incomplete final line.
     # it occurs in readLines(p$get_error_file()) within shinytest2 
