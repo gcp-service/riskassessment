@@ -14,6 +14,11 @@ test_that("Reactivity of reportPreview", {
   
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"), load_timeout = 90*1000)
+  on.exit({
+    app$stop()
+    unlink("app_db_loc")
+    rm(app, html, about, maint_info, out_val, pkg_rev, report, str_expect, app_db_loc)
+  })
   app$wait_for_idle()
   
   # set pkg_name to dplyr
@@ -63,8 +68,4 @@ test_that("Reactivity of reportPreview", {
   
   str_expect <- "Vignettes, Report Bugs, Source Control, License, NEWS file, Website, Documentation, Dependencies, NEWS current, Maintainer, Bugs Closure Rate, Test Coverage, First Version Release*, Reverse Dependencies, Latest Version Release*, Monthly downloads trend*, Package Downloads, Dependencies Uploaded*, Base-R Packages*, Type Summary*, Decision Summary*"
   expect_equal(maint_info, str_expect)
-  
-  app$stop()
-  unlink("app_db_loc")
-  rm(app, html, about, maint_info, out_val, pkg_rev, report, str_expect, app_db_loc)
 })

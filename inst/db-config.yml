@@ -83,3 +83,12 @@ noncredentialed:
       - default
     privileges:
       default: [admin, weight_adjust, auto_decision_adjust, final_decision, revert_decision, add_package, delete_package, overall_comment, general_comment]
+shinyproxy:
+  use_shinymanager: false
+  use_shinyproxy: true
+  assessment_db: database_noncredentialed.sqlite
+  credentials:
+    roles:
+      - default
+    privileges:
+      default: [admin, weight_adjust, auto_decision_adjust, final_decision, revert_decision, add_package, delete_package, overall_comment, general_comment]

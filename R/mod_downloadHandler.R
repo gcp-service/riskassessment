@@ -290,7 +290,6 @@ mod_downloadHandler_server <- function(id, pkgs, user, metric_weights){
 
               dep_cards <- build_dep_cards(data = dep_metrics, loaded = session$userData$loaded2_db()$name, toggled = session$userData$suggests())
 
-
               # Render the report, passing parameters to the rmd file.
               rmarkdown::render(
                 input = Report,

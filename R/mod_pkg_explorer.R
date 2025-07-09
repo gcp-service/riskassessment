@@ -26,16 +26,19 @@ mod_pkg_explorer_server <- function(id, selected_pkg,
                                     accepted_filenames = c("DESCRIPTION", "NAMESPACE", "LICENSE", "LICENSE.note", "NEWS", "README", "CHANGES", "MD5"),
                                     pkgarchive = reactiveVal(),
                                     creating_dir = reactiveVal(TRUE),
-                                    user, credentials) {
+                                    user, 
+                                    credentials,
+                                    tarball_dir = "tarballs"
+                                    ) {
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    
+    stopifnot(is.character(tarball_dir))
     output$pkg_explorer_ui <- renderUI({
       
       # Lets the user know that a package needs to be selected.
       if(identical(selected_pkg$name(), character(0))) {
         showHelperMessage()
-      } else if (!file.exists(file.path("tarballs", glue::glue("{selected_pkg$name()}_{selected_pkg$version()}.tar.gz")))) {
+      } else if (!file.exists(file.path(tarball_dir, glue::glue("{selected_pkg$name()}_{selected_pkg$version()}.tar.gz")))) {
         showHelperMessage(message = glue::glue("Source code not available for {{{selected_pkg$name()}}}"))
       } else {
         div(introJSUI(NS(id, "introJS")),
@@ -123,7 +126,7 @@ mod_pkg_explorer_server <- function(id, selected_pkg,
         filename <- basename(filepath)
         e <- tolower(tools::file_ext(filepath))
         if (e %in% accepted_extensions || filename %in% accepted_filenames) {
-          con <- archive::archive_read(file.path("tarballs",
+          con <- archive::archive_read(file.path(tarball_dir,
                                                  glue::glue("{selected_pkg$name()}_{selected_pkg$version()}.tar.gz")),
                                        file = glue::glue("{selected_pkg$name()}/{filepath}"))
           s <- readLines(con)

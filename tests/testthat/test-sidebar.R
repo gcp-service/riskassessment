@@ -16,6 +16,11 @@ test_that("Reactivity of sidebar", {
   
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"))
+  on.exit({
+    app$stop()
+    unlink("app_db_loc")
+    rm(app, add_comment, out_htm, pkg_ver, score_txt, status_txt, app_db_loc)
+  })
   app$wait_for_idle()
   
   # select_pkg is "-"
@@ -124,8 +129,4 @@ test_that("Reactivity of sidebar", {
   # status and score have been reset
   expect_equal(app$get_value(output = "sidebar-status")$message, "Please select a package")
   expect_equal(app$get_value(output = "sidebar-score")$message, "Please select a package")
-  
-  app$stop()
-  unlink("app_db_loc")
-  rm(app, add_comment, out_htm, pkg_ver, score_txt, status_txt, app_db_loc)
 })

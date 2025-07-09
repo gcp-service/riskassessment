@@ -14,7 +14,8 @@ test_that("reweightView works", {
   )
   
   app <- shinytest2::AppDriver$new(test_path("test-apps", "reweightView-app"))
-
+  on.exit(app$stop())
+  
   metric_weights <- app$get_value(export = "metric_weights")
   curr_new_wts <- app$get_value(export = "reweightInfo-curr_new_wts")
   expect_equal(metric_weights, curr_new_wts[,1:2])

@@ -14,6 +14,11 @@ test_that("Reactivity of communityMetrics", {
   
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"))
+  on.exit({
+    app$stop()
+    unlink("app_db_loc")
+    rm(app, add_comment, out_cmt, cmt_txt, app_db_loc)
+  })
   app$wait_for_idle()
   
   # set pkg_name to dplyr
@@ -50,8 +55,4 @@ test_that("Reactivity of communityMetrics", {
   
   # is the last text entry the comment we entered?
   expect_equal(cmt_txt[length(cmt_txt)], add_comment)
-  
-  app$stop()
-  unlink("app_db_loc")
-  rm(app, add_comment, out_cmt, cmt_txt, app_db_loc)
 })

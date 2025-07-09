@@ -9,15 +9,11 @@ test_that("invalid arguments", {
 })
 
 test_that("database creation", {
-  db <- create_db("tmp.sqlite")
+  temp_db <- withr::local_tempfile(fileext = ".sqlite")
+  db <- create_db(temp_db)
+  expect_equal(db, temp_db)
   
-  expect_equal(db, "tmp.sqlite")
-  
-  con <- DBI::dbConnect(RSQLite::SQLite(), db)
-  on.exit({
-    DBI::dbDisconnect(con)
-    unlink(db)
-    })
+  con <- withr::local_db_connection(DBI::dbConnect(RSQLite::SQLite(), db))
   
   expect_equal(DBI::dbListTables(con),
                c("comments", "community_usage_metrics", "decision_categories", "metric", "package", "package_metrics", "roles", "rules", "sqlite_sequence"))
@@ -59,15 +55,10 @@ test_that("invalid arguments", {
 })
 
 test_that("database creation", {
-  db <- create_credentials_db("tmp.sqlite")
-  
-  expect_equal(db, "tmp.sqlite")
-  
-  con <- DBI::dbConnect(RSQLite::SQLite(), db)
-  on.exit({
-    DBI::dbDisconnect(con)
-    unlink(db)
-  })
+  temp_db <- withr::local_tempfile(fileext = ".sqlite")
+  db <- create_credentials_db(temp_db)
+  expect_equal(db, temp_db)
+  con <- withr::local_db_connection(DBI::dbConnect(RSQLite::SQLite(), db))
   
   expect_equal(DBI::dbListTables(con),
                c("credentials", "logs", "pwd_mngt"))
@@ -90,15 +81,11 @@ test_that("invalid arguments", {
 })
 
 test_that("database creation", {
-  db <- create_credentials_dev_db("tmp.sqlite")
+  temp_db <- withr::local_tempfile(fileext = ".sqlite")
+  db <- create_credentials_dev_db(temp_db)
+  expect_equal(db, temp_db)
   
-  expect_equal(db, "tmp.sqlite")
-  
-  con <- DBI::dbConnect(RSQLite::SQLite(), db)
-  on.exit({
-    DBI::dbDisconnect(con)
-    unlink(db)
-  })
+  con <- withr::local_db_connection(DBI::dbConnect(RSQLite::SQLite(), db))
   
   expect_equal(DBI::dbListTables(con),
                c("credentials", "logs", "pwd_mngt"))
