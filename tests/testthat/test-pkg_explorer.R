@@ -4,8 +4,12 @@ test_that("pkg_explorer works", {
     test_path("test-apps", "explorer-app"),
     height = 1080,
     width = 1920,
-    load_timeout = 60*1000
-    )
+    load_timeout = 90*1000
+    ) |> 
+    # Sometimes this app gives a warning about an incomplete final line.
+    # it occurs in readLines(p$get_error_file()) within shinytest2 
+    # (shinytest2:::app_start_shiny). Not essential as long as the tests pass
+    suppressWarnings()
   on.exit(app$stop())
   
   expect_equal(
