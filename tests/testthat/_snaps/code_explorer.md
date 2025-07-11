@@ -1,4 +1,4 @@
-# pkg_explorer works
+# code_explorer works
 
     Code
       substring(explorer_text, 1, 1500)
