@@ -17,6 +17,7 @@ test_that("module can produce a table of package dependencies", {
 
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"), load_timeout = 1E6)
+  on.exit(app$stop())
 
   app$set_inputs(`sidebar-select_pkg` = "dplyr")
   
@@ -75,13 +76,16 @@ test_that(
     app_session$options$golem_options <- list(
       assessment_db_name = temp_db_loc
     )
-    app_session$userData$loaded2_db <- reactiveVal(
-      riskassessment:::dbSelect("
+    db_packages <-  riskassessment:::dbSelect("
             SELECT name, version, score, decision_id, decision
              FROM package as pi
              LEFT JOIN decision_categories as dc
-              ON pi.decision_id = dc.id", temp_db_loc)) # "select name, version, score from package"
-    
+              ON pi.decision_id = dc.id", temp_db_loc)
+    app_session$userData$loaded2_db <- reactiveVal(db_packages) # "select name, version, score from package"
+    app_session$userData$repo_pkgs <- reactiveVal(
+      db_packages |> 
+        dplyr::select("Package" = "name", "Version" = "version")
+    )
     testServer(packageDependenciesServer, args = testargs,  {
       session$flushReact()
       session$setInputs(incl_suggests = TRUE)

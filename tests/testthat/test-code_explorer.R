@@ -1,32 +1,15 @@
-test_that("pkg_explorer works", {
+test_that("code_explorer works", {
   
-  # delete app DB if exists to ensure clean test
-  app_db_loc <- test_path("test-apps", "explorer-app", "dplyr.sqlite")
-  if (file.exists(app_db_loc)) {
-    file.remove(app_db_loc)
-  }
-  
-  # copy in already instantiated database to avoid need to rebuild
-  # this is a database that has been built via inst/testdata/upload_format.csv
-  test_db_loc <- app_sys("testdata", "upload_format.database")
-  file.copy(
-    test_db_loc,
-    app_db_loc
-  )
-  
-  app_tar_loc <- test_path("test-apps", "explorer-app", "tarballs", "dplyr_1.1.2.tar.gz")
-  if (!dir.exists(dirname(app_tar_loc))) {
-    dir.create(dirname(app_tar_loc))
-  }
-  if (!file.exists(app_tar_loc)) {
-    download.file(
-      "https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_1.1.2.tar.gz",
-      app_tar_loc,
-      mode = "wb"
-    )
-  }
-  
-  app <- shinytest2::AppDriver$new(test_path("test-apps", "explorer-app"))
+  app <- shinytest2::AppDriver$new(
+    test_path("test-apps", "explorer-app"), 
+    height = 1080,
+    width = 1920
+  ) |> 
+    # Sometimes this app gives a warning about an incomplete final line.
+    # it occurs in readLines(p$get_error_file()) within shinytest2 
+    # (shinytest2:::app_start_shiny). Not essential as long as the tests pass
+    suppressWarnings()
+  on.exit(app$stop())
   
   app$set_inputs(tabs = "fn_expl_tab")
   app$wait_for_value(input = "fn_explorer-test_files")
@@ -59,13 +42,14 @@ test_that("pkg_explorer works", {
   )
   
   app$set_inputs(`fn_explorer-file_type` = "man")
-  app$wait_for_idle()
+  app$wait_for_idle(1000)
   
   expect_equal(
     app$get_value(input = "fn_explorer-man_files"),
     "arrange.Rd"
   )
   
-  app$expect_text("#fn_explorer-file_output div.container")
+  explorer_text <- app$get_text("#fn_explorer-file_output div.container")
+  expect_snapshot(substring(explorer_text, 1, 1500))
   
 })

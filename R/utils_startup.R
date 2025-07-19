@@ -190,7 +190,7 @@ initialize_raa <- function(assess_db, cred_db, configuration) {
   db_config <- if(missing(configuration)) get_db_config(NULL) else configuration
   used_configs <- c("assessment_db", "credential_db", "decisions", "credentials", 
                     "loggit_json", "metric_weights", "report_prefs", 
-                    "package_repo", "use_shinymanager", "inherits")
+                    "package_repo", "use_shinymanager", "inherits", "use_shinyproxy")
   if (any(!names(db_config) %in% used_configs)) {
     names(db_config) %>%
       `[`(!. %in% used_configs) %>%

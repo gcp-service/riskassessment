@@ -1,42 +1,16 @@
 test_that("pkg_explorer works", {
   
-  # delete app DB if exists to ensure clean test
-  app_db_loc <- test_path("test-apps", "explorer-app", "dplyr.sqlite")
-  if (file.exists(app_db_loc)) {
-    file.remove(app_db_loc)
-  }
-  
-  # copy in already instantiated database to avoid need to rebuild
-  # this is a database that has been built via inst/testdata/upload_format.csv
-  test_db_loc <- app_sys("testdata", "upload_format.database")
-  file.copy(
-    test_db_loc,
-    app_db_loc
-  )
-  
-  app_tar_loc <- test_path("test-apps", "explorer-app", "tarballs", "dplyr_1.1.2.tar.gz")
-  if (!dir.exists(dirname(app_tar_loc))) {
-    dir.create(dirname(app_tar_loc))
-  }
-  if (!file.exists(app_tar_loc)) {
-    download.file(
-      "https://cran.r-project.org/src/contrib/Archive/dplyr/dplyr_1.1.2.tar.gz",
-      app_tar_loc,
-      mode = "wb"
-    )
-  }
-  
-  app_src_loc <- test_path("test-apps", "explorer-app", "source", "magrittr")
-  if (!dir.exists(app_src_loc)) {
-    untar(app_tar_loc, exdir = dirname(app_src_loc))
-  }
-  
   app <- shinytest2::AppDriver$new(
     test_path("test-apps", "explorer-app"),
     height = 1080,
     width = 1920
-    )
-
+    ) |> 
+    # Sometimes this app gives a warning about an incomplete final line.
+    # it occurs in readLines(p$get_error_file()) within shinytest2 
+    # (shinytest2:::app_start_shiny). Not essential as long as the tests pass
+    suppressWarnings()
+  on.exit(app$stop())
+  
   expect_equal(
     app$get_value(output = "src_explorer-is_file"),
     TRUE
@@ -48,7 +22,12 @@ test_that("pkg_explorer works", {
     app$get_value(output = "src_explorer-filepath")$html,
     structure("<h5>DESCRIPTION</h5>", html = TRUE, class = c("html", "character"))
   )
-  app$expect_text(".ace_content .ace_layer.ace_text-layer")
+  
+  ## The text only shows up if it is visible in the UI.
+  ## Thus, with different resolution settings this can give different snapshots.
+  ## Selecting only first part solves this:
+  description_text <- app$get_text(".ace_content .ace_layer.ace_text-layer")
+  expect_snapshot(substring(description_text, 1, 1507))
 
   app$run_js("$('#300 .jstree-ocl').click()")
   app$run_js("$('#301_anchor').click()")
@@ -58,5 +37,6 @@ test_that("pkg_explorer works", {
     app$get_value(output = "src_explorer-filepath")$html,
     structure("<h5>tests/testthat.R</h5>", html = TRUE, class = c("html", "character"))
   )
+  # Not much text in this snapshot, thus no need to trim text here:
   app$expect_text(".ace_content .ace_layer.ace_text-layer")
 })

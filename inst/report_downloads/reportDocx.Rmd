@@ -41,14 +41,14 @@ params:
 }
 </style>
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, dev='svglite'}
 library(knitr)
 library(flextable)
 library(shiny)
 library(ggplot2)
 library(plotly)
 
-knitr::opts_chunk$set(echo = F, fig.width = 5.5, fig.height = 3.4)
+knitr::opts_chunk$set(echo = F, fig.width = 5.5, fig.height = 3.4, dev='svglite')
 cm_ind <- nrow(params$com_metrics) != 0
 dm_ind <- nrow(params$dep_table) != 0
 ```

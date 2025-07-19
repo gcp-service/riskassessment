@@ -19,6 +19,7 @@ test_that("Uploaded packages show up in summary table", {
 
     # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"))
+  on.exit(app$stop())
 
   # test package data to upload
   test_csv <- system.file("testdata", "upload_format.csv", package = "riskassessment")
@@ -75,6 +76,7 @@ test_that("Sample upload file can be shown and downloaded", {
 
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"))
+  on.exit(app$stop())
   app$wait_for_idle()
 
   # click to show example upload table
@@ -135,6 +137,7 @@ test_that("Removed packages show up in summary table", {
   
   # set up new app driver object
   app <- shinytest2::AppDriver$new(app_dir = test_path("test-apps"))
+  on.exit(app$stop())
   
   expect_equal(app$get_value(input = "tabs"), "Upload Package")
   
@@ -169,6 +172,4 @@ test_that("Removed packages show up in summary table", {
   pkgs_left <- app$get_value(export = "databaseView-table_data")$name
   expect_equal(length(pkgs_left), 1L)
   expect_identical(pkgs_left[1], "tidyr")
-
-  app$stop()
 })
